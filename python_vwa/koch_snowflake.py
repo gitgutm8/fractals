@@ -1,20 +1,29 @@
 import turtle
 
 
-def _draw_snowflake():
-    pass
+def _draw_koch(length, depth):
+    if depth <= 0:
+        turtle.forward(length)
+    else:
+        length /= 3
+        depth -= 1
+        # Ausrichtung: 60° -> 300° -> 0° -> 0°
+        for rotation in (60, 240, 60, 0):
+            _draw_koch(length, depth)
+            turtle.left(rotation)
 
 
+def _draw_snowflake(length, depth):
+    for _ in range(3):
+        _draw_koch(length, depth)
+        turtle.right(120)
 
 
-
-def snowflake(**kwargs):
+def draw_snowflake(length, depth=4, **kwargs):
     turtle.pen(**kwargs)
-    turtle.begin_fill()
-    _draw_snowflake()
-    turtle.end_fill()
+    _draw_snowflake(length, depth)
+    turtle.done()
 
 
 if __name__ == '__main__':
-    snowflake(300, depth=6, speed=0, fillcolor='red', shown=False)
-    turtle.done()
+    draw_snowflake(300, depth=5, shown=False, speed=0)
