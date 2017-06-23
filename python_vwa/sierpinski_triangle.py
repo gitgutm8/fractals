@@ -1,5 +1,6 @@
 import turtle
 import itertools
+import time
 
 
 def _draw_triangle(points):
@@ -30,7 +31,7 @@ def _middle(p1, p2):
     :return: Mittelpunkt der beiden Punkte
     :rtype: list
     """
-    # "Halbierter" Vektor von Punkt 1 zu Punkt 2 führt zum Mittelpunkt der beiden
+    # "Halbierter" Vektor von Punkt 1 + Punkt 2 führt zum Mittelpunkt der beiden
     return [sum(components) / 2 for components in zip(p1, p2)]
 
 
@@ -62,7 +63,11 @@ def _sierpinski_triangle(points, depth):
     """
     if depth <= 0:
         return
+    # Die kleinsten Dreiecke sollen ausgeblendet werden.
+    if depth == 1:
+        turtle.begin_fill()
     _draw_triangle(points)
+    turtle.end_fill()
     for triangle in _triangle_generator(points):
         _sierpinski_triangle(triangle, depth-1)
 
@@ -80,7 +85,8 @@ def sierpinski_triangle(start_points, depth=5, **kwargs):
     """
     turtle.pen(**kwargs)
     _sierpinski_triangle(start_points, depth)
-    turtle.done()
+    filename = f'./images/sierpanski_{color}_{depth}'
+    turtle.getcanvas().postscript(file=filename)
 
 
 def sierpinski_from_side_length(side_length, **kwargs):
@@ -99,6 +105,14 @@ def sierpinski_from_side_length(side_length, **kwargs):
     sierpinski_triangle((p1, p2, p3), **kwargs)
 
 
+def multiple(side_length, start, stop, step=1, **kwargs):
+    for d in range(start, stop, step):
+        kwargs['depth'] = d
+        sierpinski_from_side_length(side_length, **kwargs)
+        time.sleep(2)
+        turtle.clear()
+
+
 if __name__ == '__main__':
     # Punkte, die ein gleichseitiges Dreieck liefern
     example_points = [
@@ -109,4 +123,9 @@ if __name__ == '__main__':
     # Lege die untere linke Ecke als Koordinatenursprung fest, ohne dabei
     # die größe des Fensters zu verändern.
     turtle.setworldcoordinates(0, 0, *turtle.screensize())
-    sierpinski_from_side_length(300, depth=6, speed=0, pencolor='orange')
+    color = 'orange'
+    config = {'depth': 5, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
+    # sierpinski_triangle(example_points, **config)
+    # sierpinski_from_side_length(300, **config)
+    multiple(300, 1, 8, 2, **config)
+    turtle.done()
