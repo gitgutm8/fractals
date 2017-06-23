@@ -1,6 +1,8 @@
 import turtle
 import itertools
 import time
+from functools import partial
+from save_result import save_result
 
 
 def _draw_triangle(points):
@@ -72,6 +74,7 @@ def _sierpinski_triangle(points, depth):
         _sierpinski_triangle(triangle, depth-1)
 
 
+@save_result('sierpinski_{pencolor}_{depth}', turtle)
 def sierpinski_triangle(start_points, depth=5, **kwargs):
     """
     Zeichet ein Sierpinskidreieck, ausgehend von Ecken des ersten Dreiecks.
@@ -85,8 +88,6 @@ def sierpinski_triangle(start_points, depth=5, **kwargs):
     """
     turtle.pen(**kwargs)
     _sierpinski_triangle(start_points, depth)
-    filename = f'./images/sierpanski_{color}_{depth}'
-    turtle.getcanvas().postscript(file=filename)
 
 
 def sierpinski_from_side_length(side_length, **kwargs):
@@ -106,10 +107,19 @@ def sierpinski_from_side_length(side_length, **kwargs):
 
 
 def multiple(side_length, start, stop, step=1, **kwargs):
+    """
+    Zeichnet mehrere Sierpinskidreiecke.
+    :param side_length: Seitenlänge des größten Dreiecks
+    :param start: Erste Rekursionstiefe
+    :param stop: Letzte Rekursionstiefe
+    :param step: Schrittgröße der Rekursionstiefe
+    :param kwargs: Rekursionstiefe + Turtlespezifikationen
+    :return: Nichts
+    """
     for d in range(start, stop, step):
         kwargs['depth'] = d
         sierpinski_from_side_length(side_length, **kwargs)
-        time.sleep(2)
+        time.sleep(1)
         turtle.clear()
 
 
@@ -123,9 +133,14 @@ if __name__ == '__main__':
     # Lege die untere linke Ecke als Koordinatenursprung fest, ohne dabei
     # die größe des Fensters zu verändern.
     turtle.setworldcoordinates(0, 0, *turtle.screensize())
-    color = 'orange'
+
+    color = 'red'
     config = {'depth': 5, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
-    # sierpinski_triangle(example_points, **config)
-    # sierpinski_from_side_length(300, **config)
-    multiple(300, 1, 8, 2, **config)
+    possibilities = {
+        1: partial(sierpinski_triangle, example_points, **config),
+        2: partial(sierpinski_from_side_length, 300, **config),
+        3: partial(multiple, 300, start=1, stop=5, step=1, **config)
+    }
+    possibilities[2]()
+
     turtle.done()
