@@ -10,6 +10,7 @@ Ableitungsregeln:
 
 import turtle
 from save_result import save_canvas
+import os
 
 
 def draw_F(length, depth):
@@ -49,7 +50,7 @@ def fix_offset(length, depth):
     turtle.pendown()
 
 
-# @save_canvas('levyC_curve_{depth}', turtle)
+@save_canvas('levyc/levyc_{length}_{depth}', turtle)
 def draw_levy(length, depth=5, **kwargs):
     """
     Zeichnet die Lévy-C-Kurve.
@@ -64,5 +65,7 @@ def draw_levy(length, depth=5, **kwargs):
 
 
 if __name__ == '__main__':
+    if not os.path.exists('./images/levyc'):
+        os.mkdir('./images/levyc')
     draw_levy(1, depth=15, speed=0, shown=False)
     turtle.done()

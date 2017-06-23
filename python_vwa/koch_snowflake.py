@@ -1,5 +1,6 @@
 import turtle
-from save_result import save_result
+import os
+from save_result import save_canvas
 
 
 def _draw_koch(length, depth):
@@ -33,12 +34,14 @@ def _draw_snowflake(length, depth):
         turtle.right(120)
 
 
-@save_result('koch_snowflake_{depth}', turtle)
+@save_canvas('snowflakes/koch_snowflake_{depth}', turtle)
 def draw_snowflake(length, depth=4, **kwargs):
     turtle.pen(**kwargs)
     _draw_snowflake(length, depth)
 
 
 if __name__ == '__main__':
+    if not os.path.exists('./images/snowflakes'):
+        os.mkdir('./images/snowflakes')
     draw_snowflake(300, depth=3, shown=False, speed=0)
     turtle.done()

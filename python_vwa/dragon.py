@@ -15,6 +15,7 @@ F: Strecke nach vorne
 """
 
 import turtle
+import os
 from save_result import save_canvas
 
 
@@ -38,7 +39,7 @@ def draw_Y(length, depth):
     draw_Y(length, depth-1)
 
 
-@save_canvas('dragoncurve_{depth}', turtle)
+@save_canvas('dragon/dragoncurve_{depth}', turtle)
 def draw_dragon(length, depth=5, **kwargs):
     turtle.pen(**kwargs)
     turtle.setheading(90)
@@ -47,6 +48,7 @@ def draw_dragon(length, depth=5, **kwargs):
 
 
 if __name__ == '__main__':
-    draw_dragon(10, depth=6, shown=1, speed=1)
-    print('Fertig')
+    if not os.path.exists('./images/dragon'):
+        os.mkdir('./images/dragon')
+    draw_dragon(10, depth=8, shown=1, speed=0)
     turtle.done()

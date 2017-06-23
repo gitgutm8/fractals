@@ -1,8 +1,9 @@
 import turtle
 import itertools
 import time
+import os
 from functools import partial
-from save_result import save_result
+from save_result import save_canvas
 
 
 def _draw_triangle(points):
@@ -74,7 +75,7 @@ def _sierpinski_triangle(points, depth):
         _sierpinski_triangle(triangle, depth-1)
 
 
-@save_result('sierpinski_{pencolor}_{depth}', turtle)
+@save_canvas('sierpinski_triangles/sierpinski_{pencolor}_{depth}', turtle)
 def sierpinski_triangle(start_points, depth=5, **kwargs):
     """
     Zeichet ein Sierpinskidreieck, ausgehend von Ecken des ersten Dreiecks.
@@ -124,6 +125,9 @@ def multiple(side_length, start, stop, step=1, **kwargs):
 
 
 if __name__ == '__main__':
+    if not os.path.exists('./images/sierpinski_triangles'):
+        os.mkdir('./images/sierpinski_triangles')
+
     # Punkte, die ein gleichseitiges Dreieck liefern
     example_points = [
         (  0,   0),
@@ -134,8 +138,8 @@ if __name__ == '__main__':
     # die größe des Fensters zu verändern.
     turtle.setworldcoordinates(0, 0, *turtle.screensize())
 
-    color = 'red'
-    config = {'depth': 5, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
+    color = 'purple'
+    config = {'depth': 7, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
     possibilities = {
         1: partial(sierpinski_triangle, example_points, **config),
         2: partial(sierpinski_from_side_length, 300, **config),
