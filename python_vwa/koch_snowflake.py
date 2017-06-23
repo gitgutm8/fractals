@@ -1,4 +1,5 @@
 import turtle
+from save_result import save_result
 
 
 def _draw_koch(length, depth):
@@ -32,11 +33,12 @@ def _draw_snowflake(length, depth):
         turtle.right(120)
 
 
+@save_result('koch_snowflake_{depth}', turtle)
 def draw_snowflake(length, depth=4, **kwargs):
     turtle.pen(**kwargs)
     _draw_snowflake(length, depth)
-    turtle.done()
 
 
 if __name__ == '__main__':
-    draw_snowflake(300, depth=4, shown=False, speed=0)
+    draw_snowflake(300, depth=3, shown=False, speed=0)
+    turtle.done()
