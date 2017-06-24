@@ -43,5 +43,5 @@ def draw_snowflake(length, depth=4, **kwargs):
 if __name__ == '__main__':
     if not os.path.exists('./images/snowflakes'):
         os.mkdir('./images/snowflakes')
-    draw_snowflake(300, depth=3, shown=False, speed=0)
+    draw_snowflake(300, depth=2, shown=False, speed=0)
     turtle.done()

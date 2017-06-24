@@ -1,5 +1,5 @@
-def save_canvas(filename, pen):
-    path = './images/' + filename
+def save_canvas(filepath, pen):
+    path = './images/' + filepath
 
     def inner(func):
         def wrapper(*args, **kwargs):
@@ -8,6 +8,6 @@ def save_canvas(filename, pen):
             nonlocal path
             path = path.format_map(kwargs)
             pen.getcanvas().postscript(file=path)
-            print('Speichern des Bildes abgeschlossen.')
+            print(f'Speichern des Bildes in {path} abgeschlossen.')
         return wrapper
     return inner

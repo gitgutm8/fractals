@@ -5,7 +5,7 @@ Winkel: 45°
 Konstanten: F + -
 Variablen: [x]
 Ableitungsregeln:
-    F -> + F - - F +
+    F -> - F + + F -
 """
 
 import turtle
@@ -23,11 +23,11 @@ def draw_F(length, depth):
     if depth == 1:
         turtle.forward(length)
         return
-    turtle.left(45)
+    turtle.right(45)
     draw_F(length, depth-1)
-    turtle.right(90)
+    turtle.left(90)
     draw_F(length, depth-1)
-    turtle.left(45)
+    turtle.right(45)
 
 
 def fix_offset(length, depth):
@@ -40,17 +40,15 @@ def fix_offset(length, depth):
     """
     # Anfangs- und Endpunkt entfernen sich um `length` * sqrt(2)^`depth`
     # Das heißt, wenn wir von diesem Wert die Hälfte ausrechnen,
-    # erhalten wir den Wert, um den unsere turtle nach links
+    # erhalten wir den Wert, um den unsere turtle nach rechts
     # gehen muss, um die Kurve mittig zu platzieren.
     offset = length * 2 ** (depth/2) // 2
     turtle.penup()
-    turtle.left(180)
     turtle.forward(offset)
-    turtle.left(180)
     turtle.pendown()
 
 
-@save_canvas('levyc/levyc_{length}_{depth}', turtle)
+@save_canvas('levyc/levyc_{pensize}_{depth}', turtle)
 def draw_levy(length, depth=5, **kwargs):
     """
     Zeichnet die Lévy-C-Kurve.
@@ -67,5 +65,6 @@ def draw_levy(length, depth=5, **kwargs):
 if __name__ == '__main__':
     if not os.path.exists('./images/levyc'):
         os.mkdir('./images/levyc')
-    draw_levy(1, depth=15, speed=0, shown=False)
+    color = 'purple'
+    draw_levy(1, depth=10, speed=0, shown=False, pencolor='purple')
     turtle.done()

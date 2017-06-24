@@ -6,7 +6,7 @@ from functools import partial
 from save_result import save_canvas
 
 
-def _draw_triangle(points):
+def _draw_triangle(points, fill=False):
     """
     Zeichnet ein Dreieck mithilfe vorgegebener Eckpunkte.
     :param points: Eckpunkte des Dreiecks
@@ -14,14 +14,16 @@ def _draw_triangle(points):
     :return: Nicht
     :rtype: None
     """
-    turtle.hideturtle()
-    turtle.up()
+    if fill:
+        turtle.begin_fill()
+    turtle.penup()
     # Gehe zum dritten Punkt, um vernünftig mit der for-schleife
     # arbeiten zu können.
     turtle.goto(points[2])
-    turtle.down()
+    turtle.pendown()
     for point in points:
         turtle.goto(point)
+    turtle.end_fill()
 
 
 def _middle(p1, p2):
@@ -64,13 +66,10 @@ def _sierpinski_triangle(points, depth):
     :return: Nicht
     :rtype: None
     """
-    if depth <= 0:
+    if depth <= 1:
+        _draw_triangle(points, fill=True)
         return
-    # Die kleinsten Dreiecke sollen ausgeblendet werden.
-    if depth == 1:
-        turtle.begin_fill()
     _draw_triangle(points)
-    turtle.end_fill()
     for triangle in _triangle_generator(points):
         _sierpinski_triangle(triangle, depth-1)
 
@@ -87,6 +86,9 @@ def sierpinski_triangle(start_points, depth=5, **kwargs):
     :return: Nichts
     :rtype: None
     """
+    # Lege die untere linke Ecke als Koordinatenursprung fest, ohne dabei
+    # die größe des Fensters zu verändern.
+    turtle.setworldcoordinates(0, 0, *turtle.screensize())
     turtle.pen(**kwargs)
     _sierpinski_triangle(start_points, depth)
 
@@ -134,12 +136,9 @@ if __name__ == '__main__':
         (150, 260),  # 260 ist leicht gerundet
         (300,   0)
     ]
-    # Lege die untere linke Ecke als Koordinatenursprung fest, ohne dabei
-    # die größe des Fensters zu verändern.
-    turtle.setworldcoordinates(0, 0, *turtle.screensize())
 
     color = 'purple'
-    config = {'depth': 7, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
+    config = {'depth': 6, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
     possibilities = {
         1: partial(sierpinski_triangle, example_points, **config),
         2: partial(sierpinski_from_side_length, 300, **config),
