@@ -11,22 +11,33 @@ Ableitungsregeln:
 import turtle
 from save_result import save_canvas
 import os
+import itertools
 
 
-def draw_F(length, depth):
+COLORS = itertools.cycle(['red', 'orange', 'yellow', 'green', 'blue4', 'blue', 'purple'])
+
+
+def rainbow(counter):
+    if counter % 10 == 0:
+        turtle.pencolor(next(COLORS))
+
+
+def draw_F(length, depth, counter=0):
     """
     Zeichnet rekursiv Streckenabschnitte.
     :param length: Länge des Streckenabschnittes
     :param depth: Rekursionstiefe
     :return: Nichts
     """
+    counter += 1
+    rainbow(counter)
     if depth == 1:
         turtle.forward(length)
         return
     turtle.right(45)
-    draw_F(length, depth-1)
+    draw_F(length, depth-1, counter)
     turtle.left(90)
-    draw_F(length, depth-1)
+    draw_F(length, depth-1, counter)
     turtle.right(45)
 
 
@@ -40,15 +51,15 @@ def fix_offset(length, depth):
     """
     # Anfangs- und Endpunkt entfernen sich um `length` * sqrt(2)^`depth`
     # Das heißt, wenn wir von diesem Wert die Hälfte ausrechnen,
-    # erhalten wir den Wert, um den unsere turtle nach rechts
+    # erhalten wir den Wert, um den unsere turtle nach Links
     # gehen muss, um die Kurve mittig zu platzieren.
     offset = length * 2 ** (depth/2) // 2
     turtle.penup()
-    turtle.forward(offset)
+    turtle.backward(offset)
     turtle.pendown()
 
 
-@save_canvas('levyc/levyc_{pensize}_{depth}', turtle)
+@save_canvas('levyc/levyc_rainbow_{pensize}_{depth}', turtle)
 def draw_levy(length, depth=5, **kwargs):
     """
     Zeichnet die Lévy-C-Kurve.
@@ -65,6 +76,5 @@ def draw_levy(length, depth=5, **kwargs):
 if __name__ == '__main__':
     if not os.path.exists('./images/levyc'):
         os.mkdir('./images/levyc')
-    color = 'purple'
-    draw_levy(1, depth=10, speed=0, shown=False, pencolor='purple')
+    draw_levy(1, depth=16, speed=0, shown=False, pensize=1)
     turtle.done()
