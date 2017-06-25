@@ -50,5 +50,5 @@ def draw_dragon(length, depth=5, **kwargs):
 if __name__ == '__main__':
     if not os.path.exists('./images/dragon'):
         os.mkdir('./images/dragon')
-    draw_dragon(10, depth=8, shown=1, speed=0)
+    draw_dragon(1, depth=15, shown=False, speed=0)
     turtle.done()

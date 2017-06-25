@@ -137,8 +137,8 @@ if __name__ == '__main__':
         (300,   0)
     ]
 
-    color = 'purple'
-    config = {'depth': 6, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
+    color = 'orange'
+    config = {'depth': 8, 'speed': 0, 'pencolor': color, 'fillcolor': color, 'shown': False}
     possibilities = {
         1: partial(sierpinski_triangle, example_points, **config),
         2: partial(sierpinski_from_side_length, 300, **config),

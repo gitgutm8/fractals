@@ -5,7 +5,7 @@ from save_result import save_canvas
 
 def _draw_koch(length, depth):
     """https://de.wikipedia.org/wiki/Koch-Kurve#Konstruktion"""
-    if depth <= 0:
+    if depth <= 1:
         turtle.forward(length)
     else:
         length /= 3
@@ -21,7 +21,7 @@ def _center_snowflake(length):
     turtle.left(180)
     turtle.forward(length / 2)
     turtle.right(90)
-    height = 3**0.5 * 0.5 * length
+    height = 3**0.5 / 2 * length
     turtle.forward(height / 2)
     turtle.right(90)
     turtle.pendown()
@@ -43,5 +43,5 @@ def draw_snowflake(length, depth=4, **kwargs):
 if __name__ == '__main__':
     if not os.path.exists('./images/snowflakes'):
         os.mkdir('./images/snowflakes')
-    draw_snowflake(300, depth=2, shown=False, speed=0)
+    draw_snowflake(300, depth=6, shown=False, speed=0)
     turtle.done()

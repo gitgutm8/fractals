@@ -1,5 +1,5 @@
 def save_canvas(filepath, pen):
-    path = './images/' + filepath
+    path = './images/' + filepath + '.eps'
 
     def inner(func):
         def wrapper(*args, **kwargs):
